@@ -1,0 +1,90 @@
+function encr(){
+    fs.exists(param[0],function(exists){
+        if(exists){
+            //Reading File Content
+            fs.readFile(param[0], function (err,data) {
+                console.log(data.toString());
+                var CFR =  crypto.createCipher('aes192',param[2]);
+                var encrypted = CFR.update(data, 'utf8', 'base64');
+                encrypted+=CFR.final('base64');
+                console.log("Encryption: " + encrypted + "Password: " + param[2]);
+                fs.writeFile(param[0],encrypted.toString(), function (err) {
+                    if(err)throw err;
+                    //console.log(decrypt);
+                });
+
+
+            });
+        }
+        else{
+            console.log("File Not Exixts.");
+        }
+    });
+}
+function decr(){
+    fs.exists(param[0],function(exists){
+        if(exists){
+            //Reading File Content
+            fs.readFile(param[0], function (err,data) {
+                console.log(data.toString());
+                //Decryption
+                decipher = crypto.createDecipher('aes-192-cbc', param[2]);
+               //     crypto.createDecipher('aes192',);
+                decoded = decipher.update(data.toString(), 'base64', 'utf8');
+                decoded += decipher.final('utf8');
+                console.log("Decrypt : " + decoded + "Password: " + param[2]);
+
+
+                fs.writeFile(param[1],decoded, function (err) {
+                    if(err)throw err;
+                    //console.log(decrypt);
+                });
+            });
+        }
+        else{
+            console.log("File Not Exixts.");
+        }
+    });
+}
+
+var input = param[3];
+if(input=="encr")
+encr();
+else
+decr();
+
+
+
+//Checking File Path Existing
+fs.exists(param[0],function(exists){
+    if(exists){
+        //Reading File Content
+        fs.readFile(param[0], function (err,data) {
+            console.log(data.toString());
+            var CFR =  crypto.createCipher('aes192',param[1]);
+            var encrypted = CFR.update(data, 'utf8', 'base64');
+            encrypted+=CFR.final('base64');
+            console.log("Encryption: " + encrypted + "Password: " + param[1]);
+
+            //Decryption
+            var DFR =  crypto.createDecipher('aes192',param[1]);
+            var decrypt = DFR.update(data, 'base64', 'utf8');
+            decrypt+=DFR.final('utf8');
+            console.log("Decrypt : " + decrypt + "Password: " + param[1]);
+
+
+            /*fs.writeFile(param[0],encrypted.toString(), function (err) {
+                if(err)throw err;
+                //console.log(decrypt);
+            });*/
+
+            fs.writeFile(param[0],decrypt, function (err) {
+                if(err)throw err;
+                //console.log(decrypt);
+            });
+        });
+    }
+    else{
+        console.log("File Not Exixts.");
+    }
+});

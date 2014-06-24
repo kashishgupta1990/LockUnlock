@@ -1,0 +1,6 @@
+{
+  "name": "Lock-To-Unlock",
+  "version": "0.1.0",
+  "main": "unlock.js",
+    "bin":{"unlock":"./unlock.js"}
+}
